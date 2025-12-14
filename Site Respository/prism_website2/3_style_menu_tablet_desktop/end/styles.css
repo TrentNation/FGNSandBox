@@ -1,0 +1,61 @@
+@charset "UTF-8";
+/* CSS Document */
+
+html, 
+html * {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	font-family: Gotham, Helvetica Neue, Helvetica, Arial," sans-serif";
+}
+
+header {
+	padding: 32px;
+}
+
+.style-logo {
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+}
+
+.style-nav ul {
+	list-style-type: none;
+}
+
+.style-nav ul li a {
+	text-decoration: none;
+	color: #2F322A;
+	text-align: center;
+	display: block;
+	text-transform: uppercase;
+	padding: 8px;
+}
+
+/*Tablet View*/
+
+@media (min-width: 768px){
+	
+	.style-nav ul li {
+		display: inline-block;
+	}
+	
+	.style-nav ul {
+		text-align: center;
+	}
+}
+
+/*Desktop View*/
+
+@media (min-width: 1024px){
+	
+	.style-logo {
+		float: left;
+	}
+	
+	.style-nav {
+		float: right;
+	}
+	
+}
+
