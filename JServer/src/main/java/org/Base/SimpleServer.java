@@ -58,6 +58,6 @@ public class SimpleServer {
 		}
 	}
 	static void uploadWebPage(){
-		System.out.println("Uploading Web Page...");
+		System.out.println("Uploading Web Page.");
 	}
 }
