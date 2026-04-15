@@ -19,29 +19,30 @@ public class SimpleServer {
 			new Thread(() -> handleClientWebPage(clientSocket)).start();
 		}
 	}
-	static void handleClient(Socket socket) {
-		try{
-				BufferedReader in = new BufferedReader(
-						new InputStreamReader(socket.getInputStream()));
-				PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-				String message;
-				while ((message =in.readLine()) != null) {
-					System.out.println("Received: " + message);
-					out.println("Echo:  "+ message);
-				}
 
-			} catch(IOException io) {
-			io.printStackTrace();
-		}
-	}
-	//For the purpose of Handling WebPage Responses
-	static void handleClientWebPage(Socket socket) {
-		try(
+	static void handleClient(Socket socket) {
+		try {
 			BufferedReader in = new BufferedReader(
 					new InputStreamReader(socket.getInputStream()));
 			PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-		)
-		{   //Reading the HTTP request
+			String message;
+			while ((message = in.readLine()) != null) {
+				System.out.println("Received: " + message);
+				out.println("Echo:  " + message);
+			}
+
+		} catch (IOException io) {
+			io.printStackTrace();
+		}
+	}
+
+	//For the purpose of Handling WebPage Responses
+	static void handleClientWebPage(Socket socket) {
+		try (
+				BufferedReader in = new BufferedReader(
+						new InputStreamReader(socket.getInputStream()));
+				PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+		) {   //Reading the HTTP request
 			String line;
 			while (!(line = in.readLine()).isEmpty()) {
 				System.out.println("Received: " + line);
@@ -52,9 +53,11 @@ public class SimpleServer {
 			out.println("Content-Type: text/html");
 			out.println("Content-Length: " + body.length());
 			out.println(body);
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	static void uploadWebPage(){
+		System.out.println("Uploading Web Page...");
 	}
 }
