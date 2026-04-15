@@ -16,6 +16,7 @@ public class SimpleServer {
 
 			//Handle the Client in a new thread(Allowing us to serve multiple clients)
 			new Thread(() -> handleClient(clientSocket)).start();
+			new Thread(() -> handleClientWebPage(clientSocket)).start();
 		}
 	}
 	static void handleClient(Socket socket) {
@@ -23,15 +24,37 @@ public class SimpleServer {
 				BufferedReader in = new BufferedReader(
 						new InputStreamReader(socket.getInputStream()));
 				PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-				String message = in.readLine();
-				while (message != null) {
+				String message;
+				while ((message =in.readLine()) != null) {
 					System.out.println("Received: " + message);
-					out.println("Echo: "+ message);
+					out.println("Echo:  "+ message);
 				}
 
 			} catch(IOException io) {
 			io.printStackTrace();
 		}
 	}
-
+	//For the purpose of Handling WebPage Responses
+	static void handleClientWebPage(Socket socket) {
+		try(
+			BufferedReader in = new BufferedReader(
+					new InputStreamReader(socket.getInputStream()));
+			PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+		)
+		{   //Reading the HTTP request
+			String line;
+			while (!(line = in.readLine()).isEmpty()) {
+				System.out.println("Received: " + line);
+			}
+			//Send an HTTP response
+			String body = "<html><body><h1>We Are Here, Together!</h1></body></html>";
+			out.println("HTTP/1.1 200 OK");
+			out.println("Content-Type: text/html");
+			out.println("Content-Length: " + body.length());
+			out.println(body);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 }
