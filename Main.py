@@ -6,7 +6,9 @@ import shutil
 directory = os.getcwd()
 test_folder = "my_directory\\"
 
-test_directory = directory +f"\\{test_folder}"
+print("Input a directory to check")
+test_directory = input()
+test_directory = directory + f"\\{test_directory}"
 
 
 
@@ -29,17 +31,24 @@ file_directory = {
     "mp4" : "Videos"
 }
 
-for current_file in os.listdir(test_directory):
-    extension = os.path.splitext(current_file)[1][1:]
-    new_location = (directory + f"\\{file_directory.get(extension)}\\")
-    old_location = f"{test_directory}" + f"{current_file}"
-    try:
-        os.mkdir(new_location)
-        new_location += current_file
-        os.rename(old_location, new_location)
-    except FileExistsError:
-        new_location += current_file
-        os.rename(old_location, new_location)
+#Loop Section
+if os.path.isdir(test_directory):
+    for current_file in os.listdir(test_directory):
+        extension = os.path.splitext(current_file)[1][1:]
+        new_location = (directory + f"\\{file_directory.get(extension)}\\") #Destination based on extension
+        old_location = f"{test_directory}" + f"\\{current_file}"            #Grabs current File
+
+        #Checks if Directory Exists
+        if not os.path.isdir(new_location):
+            os.mkdir(new_location)
+            new_location += current_file
+            os.rename(old_location, new_location)
+        else:
+            new_location += current_file
+            os.rename(old_location, new_location)
+        continue
+else:
+    print(f"{test_directory} is not a valid directory" )
 
 
 '''
