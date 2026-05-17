@@ -1,6 +1,6 @@
 import os
 
-from src.main.python.org.SortDirectory import extension_directory
+from src.main.FileOrganizer.SortDirectory import extension_directory
 
 
 def sort_directory(directory,target_directory):
