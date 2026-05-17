@@ -1,6 +1,6 @@
 import os
 
-from src.main.FileOrganizer.SortDirectory import directory_sorter
+from src.FileOrganizer.SortDirectory import directory_sorter
 
 #User's Loop
 if __name__ == "__main__":
