@@ -2,22 +2,36 @@ import os
 
 from src.FileOrganizer.SortDirectory import directory_sorter
 
-#User's Loop
+def options():
+    option = {
+        1: "Sort Directory",
+        2: "Repeat Options",
+        3: "Quit"
+    }
+    for key, option in option.items():
+        print(key,": ", option)
+    return
+
+#User's Loop (Main)
 if __name__ == "__main__":
     user_input = 999
     opening_message = "What would you like to do?"
+    print(opening_message)
+    print(options())
     while user_input == 999:
-        print(opening_message)
+
         user_input = input()
         match user_input:
             case  "1":
-                print("Input a directory to check: \n")
-                target_directory = input()
-                target_directory = os.getcwd() + f"\\{target_directory}"
-                directory_sorter.sort_directory(os.getcwd(), target_directory)
-                break
+
+                print(opening_message)
+                print(options())
+                user_input = 999
+
             case "2":
-                break
+                print(options())
+                user_input = 999
+
             case _:
                 print("Invalid Answer")
                 user_input = 999
@@ -26,12 +40,7 @@ if __name__ == "__main__":
 
 
 
-def options():
-    option = {
-        1: "Sort Directory",
-        2: "Quit"
-    }
-    return option
+
 
 
 
