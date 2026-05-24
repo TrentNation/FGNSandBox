@@ -1,11 +1,5 @@
 import os
 from src.FileOrganizer.SortDirectory import directory_sorter
-if __name__ == "__main__":
-
-    print("Input a directory to check: \n")
-    target_directory = input()
-    target_directory = os.getcwd() + f"\\{target_directory}"
-    directory_sorter.sort_directory(os.getcwd(), target_directory)
 
 #Input each Directory seperately
 def partial_input():
@@ -56,3 +50,23 @@ def closest_valid_path(filepath):
             #Example: "C:User\Code\Python\Ascascasd" Should revert to "C:User\Code\Python"
 def check_if_valid(path):
     return os.path.exists(path)
+
+
+
+
+if __name__ == "__main__":
+
+    print("Input a directory to check: \n")
+    print("Which method would you like to pick?")
+    print("1. Partial Input?\n2. Full Input?\n")
+    print("Input: ")
+    user_input = input()
+    target_directory = ""
+    while user_input == 1 or user_input == 2:
+        match user_input:
+            case "1":
+                target_directory = partial_input()
+            case "2":
+                target_directory = full_input()
+    target_directory = os.getcwd() + f"\\{target_directory}"
+    directory_sorter.sort_directory(os.getcwd(), target_directory)
