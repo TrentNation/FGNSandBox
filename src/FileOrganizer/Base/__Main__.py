@@ -1,6 +1,6 @@
 import os
 
-from src.FileOrganizer.SortDirectory import directory_sorter
+from src.FileOrganizer.SortDirectory import sort_directory
 
 def options():
     option = {

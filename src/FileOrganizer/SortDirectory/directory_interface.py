@@ -1,5 +1,5 @@
 import os
-from src.FileOrganizer.SortDirectory import directory_sorter
+from src.FileOrganizer.SortDirectory import sort_directory
 
 #Input each Directory seperately
 def partial_input():
