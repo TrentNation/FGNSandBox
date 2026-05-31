@@ -23,31 +23,36 @@ def partial_input():
             print("Invalid option")
     return filepath
 
-
-
-
 #Input the entire Directory at once
 def full_input():
     current_filepath = ""
     loop = 0
     filepath = ""
-    while loop != 2:
+    print("Please insert the desired directory")
+    while loop != "1":
         current_filepath = ""
         print("Input: ")
         user_input = input()
         print(user_input)
         if check_if_valid(user_input):
-            current_filepath = user_input
+            filepath = user_input
+            print("Valid Directory: ", filepath)
             print("Begin here?")
             print("\n1. Yes?\n2. No?")
             loop = input()
+            match loop:
+                case "1":
+                    return filepath
+                case "2":
+                    print("Input a New File Path")
+
         else:
-            closest_valid_path(user_input)
-            print("Invalid option")
+            filepath = closest_valid_path(user_input)
+            #print("Invalid option")
     return filepath
 
 # Loops through directories and finds the last valid directory in the path
-#Example: "C:User\Code\Python\Ascascasd" Should revert to "C:User\Code\Python"
+    #Example: "C:User\Code\Python\Ascascasd" Should revert to "C:User\Code\Python"
 def closest_valid_path(filepath):
     valid_path = ""
     filepath.split("\\")
@@ -56,20 +61,22 @@ def closest_valid_path(filepath):
         if check_if_valid(checking_path):
             valid_path += f"{checking_path}\\"
         else:
-            print(f"That sadly is not a valid path. The closest we could find is{valid_path}. Would you like to use this one?")
-            print("1. Yes. \n 2. No")
-            user_input = ""
-            while user_input != "1" and user_input != 2:
-                user_input = input()
-                match user_input:
-                    case 1:
-                        return valid_path
-                    case 2:
-                        return 0
-                    case _:
-                        print("Invalid")
-
-
+            if check_if_valid(valid_path):
+                print(f"That sadly is not a valid path. The closest we could find is{valid_path}. Would you like to use this one?")
+                print("1. Yes. \n2. No.")
+                user_input = ""
+                while user_input != "1" and user_input != 2:
+                    user_input = input()
+                    match user_input:
+                        case 1:
+                            return valid_path
+                        case 2:
+                            return 0
+                        case _:
+                            print("Invalid")
+            else:
+                print("Not a valid path")
+    #Returns The Full-Inputted File Path
     return valid_path
 #Checks if File is Valid
 def check_if_valid(path):
