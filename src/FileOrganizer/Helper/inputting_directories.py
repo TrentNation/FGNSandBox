@@ -7,15 +7,15 @@ def partial_input():
     file_path = ""
     while loop != "1":
         current_file_path = ""
-        print("current_path: ", current_file_path)
+        print("current_path: ", file_path)
         print("Input: ")
         user_input = input()
-        index = user_input.find(r'"\"')
+        index = user_input.rfind(r'"\"')
         if index != -1:
             user_input = user_input[0:index+1] #Good chance to cause an error due to max depth
         print(user_input)
-        if check_if_valid(user_input):
-            current_file_path += f"{user_input}\\"
+        if check_if_valid(file_path + user_input):  #SHOULD work?
+            file_path += f"{user_input}\\"
             print("Begin here?")
             print("\n1. Yes?\n2. No?")
             loop = input()
