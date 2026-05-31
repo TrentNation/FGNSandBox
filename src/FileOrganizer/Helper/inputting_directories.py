@@ -64,12 +64,12 @@ def closest_valid_path(file_path):
                 print(f"That sadly is not a valid path. The closest we could find is {valid_path}. Would you like to use this one?")
                 print("1. Yes. \n2. No.")
                 user_input = ""
-                while user_input != "1" and user_input != 2:
+                while user_input != "1" and user_input != "2":
                     user_input = input()
                     match user_input:
-                        case 1:
+                        case "1":
                             return valid_path
-                        case 2:
+                        case "2":
                             return 0
                         case _:
                             print("Invalid")
