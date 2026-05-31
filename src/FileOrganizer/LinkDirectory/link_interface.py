@@ -1,3 +1,4 @@
+from src.FileOrganizer.Helper import inputting_directories
 from src.FileOrganizer.LinkDirectory import link_directories
 from pathlib import Path
 import os
@@ -27,8 +28,9 @@ def recursive_checking_files(directory):
 if __name__ == "__main__":
     placeholder = ""
     while placeholder != 4:
+        inputdir = inputting_directories
         print("Insert the Directory you want as primary:")
-        primary_directory = input()
+        primary_directory = inputdir.input_interface()
         print("Insert the Directory you want as secondary")
-        secondary_directory = input()
+        secondary_directory = inputdir.input_interface()
 
