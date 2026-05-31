@@ -53,10 +53,11 @@ if __name__ == "__main__":
             user_input = input()
             match user_input:
                 case "1":
-                    link_directories.symlink_directory(primary_directory, secondary_directory)
+                    link_directories.create_symbolic(primary_directory, secondary_directory)
                 case "2":
+                    link_directories.create_junction(primary_directory, secondary_directory)
                     break
                 case _:
                     print("Invalid Option")
-
+        break
 
