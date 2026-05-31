@@ -14,7 +14,7 @@ def check_relationship_of(directory):
 
 def recursive_checking_files(directory):
     num_of_files = 0
-    print("list of directs: ", len(os.listdir(directory)))
+    print(f"list of {directory}'s directs: ", len(os.listdir(directory)))
     if os.path.isdir(directory):
         for file in os.listdir(directory):
             if os.path.isdir(file):
@@ -28,7 +28,7 @@ if __name__ == "__main__":
     placeholder = ""
     while placeholder != 4:
         print("Insert the Directory you want as primary:")
-        primary_directory=input()
+        primary_directory = input()
         print("Insert the Directory you want as secondary")
-        secondary_directory=input()
+        secondary_directory = input()
 
