@@ -5,7 +5,7 @@ from src.FileOrganizer.SortDirectory import sort_directory
 def partial_input():
     loop = 0
     file_path = ""
-    while loop != 2:
+    while loop != "1":
         current_file_path = ""
         print("current_path: ", current_file_path)
         print("Input: ")
@@ -15,7 +15,7 @@ def partial_input():
             user_input = user_input[0:index+1] #Good chance to cause an error due to max depth
         print(user_input)
         if check_if_valid(user_input):
-            current_file_path += user_input
+            current_file_path += f"{user_input}\\"
             print("Begin here?")
             print("\n1. Yes?\n2. No?")
             loop = input()
@@ -36,7 +36,8 @@ def full_input():
             file_path = user_input
             print("Valid Directory: ", file_path)
             print("Begin here?")
-            print("\n1. Yes?\n2. No?")
+            print("1. Yes?\n2. No?")
+            print("Input: ")
             loop = input()
             match loop:
                 case "1":
@@ -95,15 +96,19 @@ def input_interface():
     print("Which method would you like to input your path?")
     print("1. Partial Input?\n2. Full Input?\n")
     print("Input: ")
-    user_input = input()
+    user_input = ""
 
     target_directory = ""
-    while user_input != "1" or user_input != "2":
+    while user_input not in ("1", "2"):
+        user_input = input()
         match user_input:
             case "1":
                 target_directory = partial_input()
+                break
             case "2":
                 target_directory = full_input()
+                break
             case _:
                 print("Invalid")
+                user_input = input()
     return target_directory

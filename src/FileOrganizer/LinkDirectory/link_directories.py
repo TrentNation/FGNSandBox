@@ -2,9 +2,7 @@
 import os
 
 # Source file path
-src = "/C/User/file.txt"
+def link_directory(src, dst):
+    os.link(src, dst)
+    return
 
-#Create a copy of the file above
-# Destination file path
-dst = "/Code/Python/file.txt"
-#os.link(src, dst)
