@@ -13,7 +13,7 @@ def options():
     return
 
 #User's Loop (Main)
-if __name__ == "__main__":
+def main():
     user_input = 999
     opening_message = "What would you like to do?"
     print(opening_message)
@@ -40,8 +40,9 @@ if __name__ == "__main__":
 
 
 
-
-
+#Entry Point
+if __name__ == "__main__":
+    main()
 
 
 
