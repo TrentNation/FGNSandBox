@@ -4,10 +4,10 @@ from src.FileOrganizer.SortDirectory import sort_directory
 #Input each Directory separately
 def partial_input():
     loop = 0
-    filepath = ""
+    file_path = ""
     while loop != 2:
-        current_filepath = ""
-        print("current_path: ", current_filepath)
+        current_file_path = ""
+        print("current_path: ", current_file_path)
         print("Input: ")
         user_input = input()
         index = user_input.find(r'"\"')
@@ -15,54 +15,53 @@ def partial_input():
             user_input = user_input[0:index+1] #Good chance to cause an error due to max depth
         print(user_input)
         if check_if_valid(user_input):
-            current_filepath += user_input
+            current_file_path += user_input
             print("Begin here?")
             print("\n1. Yes?\n2. No?")
             loop = input()
         else:
             print("Invalid option")
-    return filepath
+    return file_path
 
 #Input the entire Directory at once
 def full_input():
-    current_filepath = ""
     loop = 0
-    filepath = ""
+    file_path = ""
     print("Please insert the desired directory")
     while loop != "1":
-        current_filepath = ""
         print("Input: ")
         user_input = input()
         print(user_input)
         if check_if_valid(user_input):
-            filepath = user_input
-            print("Valid Directory: ", filepath)
+            file_path = user_input
+            print("Valid Directory: ", file_path)
             print("Begin here?")
             print("\n1. Yes?\n2. No?")
             loop = input()
             match loop:
                 case "1":
-                    return filepath
+                    return file_path
                 case "2":
                     print("Input a New File Path")
 
         else:
-            filepath = closest_valid_path(user_input)
+            file_path = closest_valid_path(user_input)
             #print("Invalid option")
-    return filepath
+    return file_path
 
 # Loops through directories and finds the last valid directory in the path
     #Example: "C:User\Code\Python\Ascascasd" Should revert to "C:User\Code\Python"
-def closest_valid_path(filepath):
+def closest_valid_path(file_path):
     valid_path = ""
-    filepath.split("\\")
-    for directory in filepath:
+    directories_folder = file_path.split("\\")
+    for directory in directories_folder:
         checking_path = valid_path + directory
+
         if check_if_valid(checking_path):
-            valid_path += f"{checking_path}\\"
+            valid_path += f"{directory}\\"
         else:
             if check_if_valid(valid_path):
-                print(f"That sadly is not a valid path. The closest we could find is{valid_path}. Would you like to use this one?")
+                print(f"That sadly is not a valid path. The closest we could find is {valid_path}. Would you like to use this one?")
                 print("1. Yes. \n2. No.")
                 user_input = ""
                 while user_input != "1" and user_input != 2:
@@ -78,6 +77,7 @@ def closest_valid_path(filepath):
                 print("Not a valid path")
     #Returns The Full-Inputted File Path
     return valid_path
+
 #Checks if File is Valid
 def check_if_valid(path):
     return os.path.exists(path)
