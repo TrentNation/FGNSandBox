@@ -1,26 +1,41 @@
 import os
 
-from src.FileOrganizer.SortDirectory import sort_directory
+from src.FileOrganizer.SortDirectory import sort_controller
+from src.FileOrganizer.LinkDirectory import link_controller
+def option_decoder(option, user_options):
+    if option in user_options:
+        return -1
+    else:
+        print(user_options.get(option)[1])
 
 def options():
     option = {
-        1: "Sort Directory",
-        2: "Repeat Options",
-        3: "Quit"
+        1: ["Sort Directory", sort_controller],
+        2: ["Link Directory", link_controller],
+        3: ["Repeat Options", options()],
+        4: "Quit"
     }
     for key, option in option.items():
-        print(key,": ", option)
-    return
+        if len(option)==2:
+            print(key,": ", option[0])
+        else:
+            print(key, ": ", option)
+    return option
 
 #User's Loop (Main)
+
 def main():
+    option_decoder("yep")
+
     user_input = 999
     opening_message = "What would you like to do?"
     print(opening_message)
-    print(options())
+    user_options = options()
     while user_input == 999:
 
         user_input = input()
+        option_decoder(user_input, user_options)
+        '''
         match user_input:
             case  "1":
 
@@ -38,7 +53,7 @@ def main():
 
 
 
-
+'''
 
 #Entry Point
 if __name__ == "__main__":
