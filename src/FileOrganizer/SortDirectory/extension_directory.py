@@ -7,7 +7,7 @@ class extension_directory:
             "Epub" : "Document",
             "HTML" : "Document",
             "Mobi" : "Document",
-            "PDF" : "Document",
+            "pdf" : "Document",
             "7Z" : "Archives",
             "Tar" : "Archives",
             "War" : "Archives",

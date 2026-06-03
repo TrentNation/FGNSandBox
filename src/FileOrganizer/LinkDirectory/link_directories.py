@@ -9,7 +9,8 @@ import subprocess
 def create_symbolic(source_directory, target_directory):
     os.link(source_directory, target_directory)
     return
-#Creates A Juntion Link folder connected to the source Directory
+
+#Creates A Junction Link folder connected to the source Directory
 #source_directory : The primary directory to serve as base
 #target_directory : The Location of where the new Junction folder will be located
 def create_junction(source_directory, target_directory):
