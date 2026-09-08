@@ -1,40 +1,53 @@
 import os
-
+import subprocess
 from src.FileOrganizer.SortDirectory import sort_controller
 from src.FileOrganizer.LinkDirectory import link_controller
 def option_decoder(option, user_options):
     if option in user_options:
         return -1
     else:
-        print(user_options.get(option)[1])
+        print(user_options.get(option))
 
-def options():
-    option = {
-        1: ["Sort Directory", sort_controller],
-        2: ["Link Directory", link_controller],
-        3: ["Repeat Options", options()],
-        4: "Quit"
-    }
-    for key, option in option.items():
-        if len(option)==2:
-            print(key,": ", option[0])
+def print_dict(dictionary : dict):
+    for key, option in dictionary.items():
+        if len(option)>1:
+            print(key,": ", option)
         else:
             print(key, ": ", option)
-    return option
+def options(picked = None):
+    option = {
+        1: "Sort Directory",
+        2: "Link Directory",
+        3: "Repeat Options",
+        4: "Quit"
+    }
+    if picked is None:
+        print_dict(option)
+    else:
+        match picked:
+            case "1":
+                subprocess.run(["python", "C:\Coding\Coding Projects\Python Projects\Practice\FileOrganizer\src\FileOrganizer\SortDirectory\\sort_controller.py"])
+            case "2":
+                subprocess.run(["python", "C:\Coding\Coding Projects\Python Projects\Practice\FileOrganizer\src\FileOrganizer\LinkDirectory\\link_controller.py"])
+            case "3":
+                print_dict(option)
+            case "4":
+                return 4
 
 #User's Loop (Main)
 
 def main():
-    option_decoder("yep")
+    # option_decoder("yep")
 
     user_input = 999
     opening_message = "What would you like to do?"
-    print(opening_message)
-    user_options = options()
-    while user_input == 999:
-
+    options()
+    while user_input != "4":
+        print(opening_message)
         user_input = input()
-        option_decoder(user_input, user_options)
+        user_options = options(user_input)
+
+        # option_decoder(user_input, user_options)
         '''
         match user_input:
             case  "1":

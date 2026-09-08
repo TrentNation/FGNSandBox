@@ -10,13 +10,6 @@ import os
 Saving the Current Directory's place is becoming a hassle.
 Consider Storing it as a value to a class Object
 '''
-def add_list_to_screen(text_list, list_box : tk.PanedWindow, screen):
-    for row in range(len(text_list)):
-        if not os.path.isdir(text_list[row]):
-            list_box.add(tk.Label(text= f"{text_list[row]}"))
-        else:
-            list_box.add(tk.Button(text = f"{text_list[row]}",
-                               command = lambda: change_list_to_list(text_list[row],list_box)))
 
 '''
 Main Idea:
@@ -25,46 +18,68 @@ Main Idea:
 "Clicking on them switches to their directory"
 "You can back up a file via another button"
 '''
-def change_list_to_list(new_list_source: str, list_box: tk.Listbox):
-    clear_list(list_box)
+def switch_window():
+    None
+
+def add_task(event = None):
+    task = entry_task.get().strip()
+    if task:
+        listbox_tasks.insert(tk.END, task)
+        entry_task.delete(0, tk.END)
+
+def delete_task():
+    try:
+        selected_index = listbox_tasks.curselection()[0]
+        listbox_tasks.delete(selected_index)
+    except IndexError:
+        pass # Do "Nothing" if no item is selected
 
 
 
-def clear_list(target:tk.Listbox):
-    target.delete(0, tk.END)
+
 
 if __name__ == "__main__":
     root = tk.Tk()
     root.title("Main Screen")
+    #root.geometry("100x100")
 
-    frame = tk.Frame()
-    frame.grid(row = 0, column = 0)
+    frame_main = tk.Frame(root)
+    frame_main.pack(padx=10, pady=10, fill="x")
+
+    entry_task = tk.Entry(frame_main, font=("Arial", 12))
+    entry_task.pack(side="left", fill="x", expand=True, padx= (0, 5))
+    entry_task.bind("<Return>", add_task) #Pressing Enter adds the task
+
+    button_add = tk.Button(frame_main, text ="Add", command=add_task, width=8)
+    button_add.pack(side="right")
+
+    #Options Section
+    option_list = tk.Frame(root)
+    option_list.pack(side="right",padx=10,expand=True, pady=10,fill="both")
+    option_list.config(highlightthickness=0.5, highlightbackground="black")
+
+    button_add = tk.Button(option_list, text="Sort Folders" ,command = switch_window, font=("Arial", 20))
+    button_add.pack(side="left",expand = True)
+
+
+
+    # Viewing Folders Section
+    frame_list = tk.Frame(root)
+    frame_list.pack(fill="both", expand=True, padx=10, pady=5)
+
+    scrollbar = tk.Scrollbar(frame_list)
+    scrollbar.pack(side="right", fill="y")
+
     text_test_name = "Default"
-    text_directory_List = tk.Listbox()
-    default_path = "C:\Coding\Coding Projects\Python Projects\Practice\FileOrganizer\src\FileOrganizer"
-    print(default_path)
-    text_test_list =  os.listdir(default_path)
-    print(text_test_list)
-    text_directory_name = tk.Label(root, text = text_test_name)
-    text_directory_name.grid( row= 0, column = 0)
-    #text_directory_List.grid( row = 1, column = 0)
+    listbox_tasks = tk.Listbox(frame_list, yscrollcommand=scrollbar.set, font = ("Arial", 12), selectbackground="gray")
+    listbox_tasks.pack(side="left", fill="both", expand=True)
+    scrollbar.config(command=listbox_tasks.yview)
 
-    button = tk.Button(root, text = "Clear", command = lambda: clear_list(text_directory_List))
-
-    panel_main = tk.PanedWindow(root, orient=HORIZONTAL)
-    panel_main.grid(row = 1, column =0)
-    panel_window = tk.PanedWindow(panel_main, orient=VERTICAL, bd=5)
-    panel_main.add(panel_window)
-
-    add_list_to_screen(text_test_list,panel_window, root)
-
-    #add_list_to_screen(text_test_list, text_directory_List, root)
-    button.grid(row = 1, column = 1)
-
-
+    button_delete = tk.Button(root, text="Delete Selected Task", command = delete_task, background = "tomato", fg = "white")
+    button_delete.pack(fill = "x", padx=10, pady=10)
+    #default_path = "C:\Coding\Coding Projects\Python Projects\Practice\FileOrganizer\src\FileOrganizer"
+    #text_test_list =  os.listdir(default_path)
 
 
     root.mainloop()
-
-    root.frame()
 
