@@ -21,14 +21,25 @@ Main Idea:
 def switch_window(screen=None):
     None
 
-def sort_screen(screen : tk.Tk() = None):
+def sort_screen():
     new_window = tk.Toplevel()
     new_window.title("Sorting Screen")
-    new_window.geometry("100x100")
-    frame_sort = tk.Frame(new_window)
-    frame_sort.pack(padx = 5, pady = 5, fill="x")
+    new_window.geometry("400x400")
+    new_window.config(background="#907948")
 
-    None
+    frame_sort = tk.Frame(new_window)
+    frame_sort.pack(padx = 10, pady = 10, fill="both",expand=True)
+    frame_sort.config(highlightthickness=0.5, highlightbackground="black")
+
+
+    frame_directory = tk.Frame(frame_sort)
+    frame_directory.pack(side="top",padx=5, pady = 5, fill="x", expand=True)
+    frame_directory.config(highlightthickness=0.5, highlightbackground="blue", height=100, anchor = "ne")
+
+    frame_current_directory = tk.Frame(frame_sort)
+
+    frame_options = tk.Frame(frame_sort)
+
 def add_task(event = None):
     task = entry_task.get().strip()
     if task:
