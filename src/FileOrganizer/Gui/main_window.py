@@ -31,28 +31,38 @@ def sort_screen():
     frame_sort.pack(padx = 10, pady = 10, fill="both",expand=True)
     frame_sort.config(highlightthickness=0.5, highlightbackground="black")
 
-
-    frame_directory = tk.Frame(frame_sort)
-    frame_directory.pack(side="top",padx=5, pady = 5, fill="x", expand=True)
-    frame_directory.config(highlightthickness=0.5, highlightbackground="blue", height=100, anchor = "ne")
-
+    #Listing off Directory's Files
     frame_current_directory = tk.Frame(frame_sort)
+    frame_current_directory.pack(side = "left", ipadx = 10, ipady = 10, expand=True,fill="both")
+    frame_current_directory.config(highlightthickness=0.5, highlightbackground="blue", width=100)
 
+    #Current Directory Name
+    frame_directory_name = tk.LabelFrame(frame_sort)
+    frame_directory_name.config(highlightthickness=0.5, highlightbackground="red", height=50, width = 100, text="Current Directory:")
+    frame_directory_name.pack( fill="both", expand=True)
+    text_directory_name = tk.Label(frame_directory_name,font=("Arial", 14), text="Yoooooooooooooooooooooooooooooooooooooooooo", wraplength=200)
+    text_directory_name.pack(expand=True, fill="both")
+
+    #Action Options
     frame_options = tk.Frame(frame_sort)
+    frame_options.pack(ipadx=10, ipady=300, expand = True, side = "left", fill="both")
+    frame_options.config(highlightthickness=0.5, highlightbackground="green", width=100)
+    '''
 
 def add_task(event = None):
     task = entry_task.get().strip()
     if task:
         listbox_tasks.insert(tk.END, task)
         entry_task.delete(0, tk.END)
-
+'''
+'''
 def delete_task():
     try:
         selected_index = listbox_tasks.curselection()[0]
         listbox_tasks.delete(selected_index)
     except IndexError:
         pass # Do "Nothing" if no item is selected
-
+'''
 
 
 
@@ -97,8 +107,8 @@ if __name__ == "__main__":
     listbox_tasks.pack(side="left", fill="both", expand=True)
     scrollbar.config(command=listbox_tasks.yview)
 
-    button_delete = tk.Button(root, text="Delete Selected Task", command = delete_task, background = "tomato", fg = "white")
-    button_delete.pack(fill = "x", padx=10, pady=10)
+    #button_delete = tk.Button(root, text="Delete Selected Task", command = delete_task, background = "tomato", fg = "white")
+    #button_delete.pack(fill = "x", padx=10, pady=10)
     #default_path = "C:\Coding\Coding Projects\Python Projects\Practice\FileOrganizer\src\FileOrganizer"
     #text_test_list =  os.listdir(default_path)
 
