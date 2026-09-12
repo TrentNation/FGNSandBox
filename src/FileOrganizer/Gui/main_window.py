@@ -38,8 +38,9 @@ def sort_screen():
     frame_current_directory.config(highlightthickness=0.5, highlightbackground="blue", width=100)
 
     listbox_directory_files = tk.Listbox(frame_current_directory)
-    listbox_directory_files.pack(side = "left",expand = True, fill="both" )
-    listbox_directory_files.insert(tk.END, )
+    listbox_directory_files.pack(side = "left",expand = True, fill="both")
+    for current_file in os.listdir(current_directory):
+        listbox_directory_files.insert(tk.END, current_file)
 
     #Current Directory Name
     '''
