@@ -60,6 +60,7 @@ def sort_screen():
     frame_directory_name.pack( fill="both", expand=True)
     text_directory_name = tk.Label(frame_directory_name,font=("Arial", 20), text=current_directory.split('\\')[-1], wraplength=200)
     text_directory_name.pack(expand=True, fill="both")
+    text_directory_name.config(text= ("<Return>", popup_bonus))
 
     #Action Options
     '''
@@ -72,15 +73,44 @@ def sort_screen():
     frame_options.config(highlightthickness=0.5, highlightbackground="green", width=100)
 
     button_sort_folder = tk.Button(frame_options, text="Sort Folders", font = ("Arial", 20))
-    button_change_directory = tk.Button(frame_options, text="Change Current Directory",command= lambda: popup_bonus(current_directory), font = ("Arial", 20))
+    '''
+    Opens Popup Window for Changing Directory
+    '''
+    button_change_directory = tk.Button(frame_options, text="Change Current Directory",command= popup_bonus, font = ("Arial", 20))
     button_output_change = tk.Button(frame_options, text = "Change Output Folders", font = ("Arial", 20))
     button_sort_folder.grid(row = 0,column=0, sticky="nsew")
     button_change_directory.grid(row=1,column=0, sticky="nsew")
     button_output_change.grid(row=2,column=0, sticky="nsew")
 
+'''
+Purpose: popup_bonus should create a popup window for the user to input a valid directory address. Once it's validated, it should return the value to update the previous's window
+current_directory value & tk.Label box.
+'''
+class Popup(tk.Toplevel):
+    def __init__(self, master, **kwargs):
+        super().__init__(master,kwargs)
+        label_entry_help = tk.Label(self, text="Input New Directory")
+        label_entry_help.pack()
 
-def popup_bonus(current_directory):
-    def input_directory(event = None, current_directory = None):
+        self.entry = tk.Entry(self)
+        self.entry.insert(0, "Hello World")
+        self.entry.pack()
+
+        button_enter = tk.Button(self, text="OK", command= self.button_submit)
+        button_enter.pack()
+
+        ##To keep Popup Window on Top + Pause Previous Windows
+        self.transient(master)   #Set window to be top of main Window
+
+        self.grab_set()          #Hijacks the commands from Main Window(Prevents any inputs on main window)
+        master.wait_window(self) #Pauses The Main Window Until Destroyed(Finished
+    def button_submit(self):
+        self.result = self.entry.get()
+        self.destroy()
+
+'''
+def popup_bonus():
+    def input_directory(event = None):
         query_directory = event.get().strip()
         if os.path.isdir(query_directory):
             current_directory = query_directory
@@ -93,16 +123,22 @@ def popup_bonus(current_directory):
     label_entry_help = tk.Label(win, text="Input New Directory")
     label_entry_help.pack()
     entry_directory = tk.Entry(win, font=("Arial", 12))
-    entry_directory.bind("<Return>", input_directory)
     entry_directory.pack()
-    button_enter = tk.Button(win, text="Enter", command= lambda : input_directory(entry_directory, current_directory))
+    button_enter = tk.Button(win, text="Enter", command= lambda : input_directory(entry_directory))
+    entry_directory.bind("<Return>", input_directory)
     button_enter.pack()
     button_exit = tk.Button(win, text="Exit", command = win.destroy)
     button_exit.pack()
+    return entry_directory
+'''
 
 
+'''
+Purpose:
+Class object representing the Main Gui
 
-    None
+'''
+
 '''
 
 def add_task(event = None):
@@ -119,6 +155,9 @@ def delete_task():
     except IndexError:
         pass # Do "Nothing" if no item is selected
 '''
+class Main(tk.Frame):
+    def __init__(self, master, **kwargs):
+        super().__init__()
 
 
 
