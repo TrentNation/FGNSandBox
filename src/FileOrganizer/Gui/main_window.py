@@ -5,6 +5,7 @@ from tkinter import filedialog, messagebox,ttk
 from tkinter.constants import HORIZONTAL, VERTICAL
 import os
 
+from src.FileOrganizer.Helper.inputting_directories import partial_input
 
 '''
 Saving the Current Directory's place is becoming a hassle.
@@ -37,12 +38,19 @@ def sort_screen():
     frame_current_directory.pack(side = "left", ipadx = 10, ipady = 10, expand=True,fill="both")
     frame_current_directory.config(highlightthickness=0.5, highlightbackground="blue", width=100)
 
-    listbox_directory_files = tk.Listbox(frame_current_directory)
+    scrollbar_directory = tk.Scrollbar(frame_current_directory)
+    scrollbar_directory.pack(side="right", fill="y")
+    listbox_directory_files = tk.Listbox(frame_current_directory, yscrollcommand=scrollbar_directory.set)
+    scrollbar.config(command=listbox_directory_files.yview)
     listbox_directory_files.pack(side = "left",expand = True, fill="both")
     for current_file in os.listdir(current_directory):
-        listbox_directory_files.insert(tk.END, current_file)
+        for _ in range(20):
+            listbox_directory_files.insert(tk.END, current_file)
 
-    #Current Directory Name
+
+
+
+#Current Directory Name
     '''
     Missing :
         -Updatable Directory Name
@@ -50,7 +58,7 @@ def sort_screen():
     frame_directory_name = tk.LabelFrame(frame_sort)
     frame_directory_name.config(highlightthickness=0.5, highlightbackground="red", height=50, width = 100, text="Current Directory:")
     frame_directory_name.pack( fill="both", expand=True)
-    text_directory_name = tk.Label(frame_directory_name,font=("Arial", 14), text=current_directory.split('\\')[-1], wraplength=200)
+    text_directory_name = tk.Label(frame_directory_name,font=("Arial", 20), text=current_directory.split('\\')[-1], wraplength=200)
     text_directory_name.pack(expand=True, fill="both")
 
     #Action Options
@@ -64,13 +72,37 @@ def sort_screen():
     frame_options.config(highlightthickness=0.5, highlightbackground="green", width=100)
 
     button_sort_folder = tk.Button(frame_options, text="Sort Folders", font = ("Arial", 20))
-    button_change_directory = tk.Button(frame_options, text="Change Current Directory", font = ("Arial", 20))
+    button_change_directory = tk.Button(frame_options, text="Change Current Directory",command= lambda: popup_bonus(current_directory), font = ("Arial", 20))
     button_output_change = tk.Button(frame_options, text = "Change Output Folders", font = ("Arial", 20))
     button_sort_folder.grid(row = 0,column=0, sticky="nsew")
     button_change_directory.grid(row=1,column=0, sticky="nsew")
     button_output_change.grid(row=2,column=0, sticky="nsew")
 
 
+def popup_bonus(current_directory):
+    def input_directory(event = None, current_directory = None):
+        query_directory = event.get().strip()
+        if os.path.isdir(query_directory):
+            current_directory = query_directory
+            win.destroy()
+        else:
+            tk.Label(win, text="ERROR: INVALID", highlightcolor="red", font=("Arial", 8)).pack()
+    win = tk.Toplevel()
+    win.wm_title("Enter New Directory")
+
+    label_entry_help = tk.Label(win, text="Input New Directory")
+    label_entry_help.pack()
+    entry_directory = tk.Entry(win, font=("Arial", 12))
+    entry_directory.bind("<Return>", input_directory)
+    entry_directory.pack()
+    button_enter = tk.Button(win, text="Enter", command= lambda : input_directory(entry_directory, current_directory))
+    button_enter.pack()
+    button_exit = tk.Button(win, text="Exit", command = win.destroy)
+    button_exit.pack()
+
+
+
+    None
 '''
 
 def add_task(event = None):
