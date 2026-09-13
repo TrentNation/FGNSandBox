@@ -78,7 +78,7 @@ def sort_screen():
     '''
     Opens Popup Window for Changing Directory
     '''
-    button_change_directory = tk.Button(frame_options, text="Change Current Directory",command= popup_bonus, font = ("Arial", 20))
+    button_change_directory = tk.Button(frame_options, text="Change Current Directory", font = ("Arial", 20))
     button_output_change = tk.Button(frame_options, text = "Change Output Folders", font = ("Arial", 20))
     button_sort_folder.grid(row = 0,column=0, sticky="nsew")
     button_change_directory.grid(row=1,column=0, sticky="nsew")
@@ -176,14 +176,29 @@ class SortScreen(tk.Toplevel):
         frame_current_directory.pack(side = "left", ipadx = 10, ipady = 10, expand=True,fill="both")
         frame_current_directory.config(highlightthickness=0.5, highlightbackground="blue", width=100)
 
+        '''
+        Priority One:
+            COMPLETE THIS SECTION
+                -Needs Directory Extension Grouping Implemented
+                -(Effectively, if the file is recognized by the sorter, it will be classified and shown to the user
+                    -Example:
+                    _________________________
+                    |     Document1.pdf     |
+                    |    Document2.docx     |  <----- Documents
+                    |    Document3.txt      |
+                    |_______________________|
+                        File1.py              <------ Unknown?
+                        File2.py
+                        ...
+        '''
         scrollbar_directory = tk.Scrollbar(frame_current_directory)
-        scrollbar_directory.pack(side="right", fill="y")
+        scrollbar_directory.pack(side="left", fill="y")
         #listbox_directory_files = tk.Listbox(frame_current_directory, yscrollcommand=scrollbar_directory.set)
         canvas_directory_files = tk.Canvas(frame_current_directory,highlightthickness=0)
         frame_directory_files = tk.Frame(canvas_directory_files)
         canvas_directory_files.create_window((0,0),window=frame_directory_files, anchor="nw")
         frame_directory_files.bind("<Configure>", lambda e: canvas_directory_files.configure(scrollregion=canvas_directory_files.bbox("all")))
-        scrollbar_directory.config(command=canvas_directory_files.yview)
+        scrollbar_directory.config(command=canvas_directory_files.yview, highlightthickness=1)
 
         #Collecting...
         list_directory_options = list()
