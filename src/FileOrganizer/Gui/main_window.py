@@ -6,6 +6,7 @@ from tkinter.constants import HORIZONTAL, VERTICAL
 import os
 
 from src.FileOrganizer.Helper.inputting_directories import partial_input
+from src.FileOrganizer.SortDirectory import extension_directory
 
 '''
 Saving the Current Directory's place is becoming a hassle.
@@ -38,10 +39,11 @@ def sort_screen():
     frame_current_directory.pack(side = "left", ipadx = 10, ipady = 10, expand=True,fill="both")
     frame_current_directory.config(highlightthickness=0.5, highlightbackground="blue", width=100)
 
+
     scrollbar_directory = tk.Scrollbar(frame_current_directory)
     scrollbar_directory.pack(side="right", fill="y")
     listbox_directory_files = tk.Listbox(frame_current_directory, yscrollcommand=scrollbar_directory.set)
-    scrollbar.config(command=listbox_directory_files.yview)
+    scrollbar_directory.config(command=listbox_directory_files.yview)
     listbox_directory_files.pack(side = "left",expand = True, fill="both")
     for current_file in os.listdir(current_directory):
         for _ in range(20):
@@ -60,7 +62,7 @@ def sort_screen():
     frame_directory_name.pack( fill="both", expand=True)
     text_directory_name = tk.Label(frame_directory_name,font=("Arial", 20), text=current_directory.split('\\')[-1], wraplength=200)
     text_directory_name.pack(expand=True, fill="both")
-    text_directory_name.config(text= ("<Return>", popup_bonus))
+    #text_directory_name.config(text= ("<Return>", popup_bonus))
 
     #Action Options
     '''
@@ -155,55 +157,103 @@ def delete_task():
     except IndexError:
         pass # Do "Nothing" if no item is selected
 '''
-class Main(tk.Frame):
-    def __init__(self, master, **kwargs):
-        super().__init__()
+class SortScreen(tk.Toplevel):
+    def __init__(self, master=None, **kwargs):
+        super().__init__(master, **kwargs)
+        #frame_main = tk.Frame(self)
+        #frame_main.pack(padx=10, pady=10, fill="x")
+        self.title("Sorting Screen")
+        self.geometry("500x400")
+        self.config(background="#907948")
+        current_directory = os.getcwd()
 
+        frame_sort = tk.Frame(self)
+        frame_sort.pack(padx = 10, pady = 10, fill="both",expand=True)
+        frame_sort.config(highlightthickness=0.5, highlightbackground="black")
+
+        #Listing off Directory's Files
+        frame_current_directory = tk.Frame(frame_sort)
+        frame_current_directory.pack(side = "left", ipadx = 10, ipady = 10, expand=True,fill="both")
+        frame_current_directory.config(highlightthickness=0.5, highlightbackground="blue", width=100)
+
+        scrollbar_directory = tk.Scrollbar(frame_current_directory)
+        scrollbar_directory.pack(side="right", fill="y")
+        #listbox_directory_files = tk.Listbox(frame_current_directory, yscrollcommand=scrollbar_directory.set)
+        canvas_directory_files = tk.Canvas(frame_current_directory,highlightthickness=0)
+        frame_directory_files = tk.Frame(canvas_directory_files)
+        canvas_directory_files.create_window((0,0),window=frame_directory_files, anchor="nw")
+        frame_directory_files.bind("<Configure>", lambda e: canvas_directory_files.configure(scrollregion=canvas_directory_files.bbox("all")))
+        scrollbar_directory.config(command=canvas_directory_files.yview)
+
+        #Collecting...
+        list_directory_options = list()
+        temp_dir = extension_directory.extension_directory()
+        list_extension = temp_dir.get_directory()
+        for current_file in os.listdir(current_directory):
+            extension = os.path.splitext(current_file)[1][1:]
+            list_directory_options.append([current_file,list_extension.get(extension)])
+
+        print(list_directory_options)
+        '''
+        listbox_directory_files.pack(side = "left",expand = True, fill="both")
+        scrollbar_directory.config(command=listbox_directory_files.yview)
+        for current_file in os.listdir(current_directory):
+            for _ in range(20):
+                temp_dir = extension_directory.extension_directory()
+                list_extension = temp_dir.get_directory()
+                extension = os.path.splitext(current_file)[1][1:]
+               # group_extension = tk.Frame()
+                """
+                Frame contains Frames -> Labels
+                """
+                #tk.Label(text=current_directory)
+                #print(list_extension.get(extension))
+                listbox_directory_files.insert(tk.END, current_file)
+        '''
+
+
+class Main(tk.Frame):
+    def __init__(self, master = None, **kwargs):
+        super().__init__(master, **kwargs)
+        frame_main = tk.Frame(self)
+        frame_main.pack(padx=10,pady=10, fill="x")
+
+        #Options Section
+        frame_options = tk.Frame(self)
+        frame_options.pack(side="right",padx=10,expand=True, pady=10,fill="both")
+        frame_options.config(highlightthickness=0.5, highlightbackground="black")
+
+        button_sort = tk.Button(frame_options, text="Sort Folders" ,command = self.switch_sort, font=("Arial", 20))
+        button_sort.grid(row=0, column = 0, padx = 5, pady = 5)
+
+        button_link = tk.Button(frame_options, text ="Link Folders", command = switch_window, font=("Arial",20))
+        button_link.grid(row=1, column=0, padx = 5, pady = 5)
+
+        ## Viewing Folders Section
+        frame_list = tk.Frame(self)
+        frame_list.pack(fill="both", expand=True, padx=10, pady=5)
+
+        scrollbar = tk.Scrollbar(frame_list)
+        scrollbar.pack(side="right", fill="y")
+
+        text_test_name = "Default"
+        listbox_tasks = tk.Listbox(frame_list, yscrollcommand=scrollbar.set, font = ("Arial", 12), selectbackground="gray")
+        listbox_tasks.pack(side="left", fill="both", expand=True)
+        scrollbar.config(command=listbox_tasks.yview)
+    def switch_sort(self):
+        s = SortScreen(self)
+
+    def switch_link(self):
+        None
+        # l = LinkScreen(self)
 
 
 
 if __name__ == "__main__":
     root = tk.Tk()
-    root.title("Main Screen")
-    #root.geometry("100x100")
-
-    frame_main = tk.Frame(root)
-    frame_main.pack(padx=10, pady=10, fill="x")
-    '''
-    entry_task = tk.Entry(frame_main, font=("Arial", 12))
-    entry_task.pack(side="left", fill="x", expand=True, padx= (0, 5))
-    entry_task.bind("<Return>", add_task) #Pressing Enter adds the task
-
-    button_add = tk.Button(frame_main, text ="Add", command=add_task, width=8)
-    button_add.pack(side="right")
-    '''
-
-    #Options Section
-    option_list = tk.Frame(root)
-    option_list.pack(side="right",padx=10,expand=True, pady=10,fill="both")
-    option_list.config(highlightthickness=0.5, highlightbackground="black")
-
-    button_Sort = tk.Button(option_list, text="Sort Folders" ,command = sort_screen, font=("Arial", 20))
-    button_Sort.grid(row=0, column = 0, padx = 5, pady = 5)
-
-    button_Link = tk.Button(option_list, text ="Link Folders", command = switch_window, font=("Arial",20))
-    button_Link.grid(row=1, column=0, padx = 5, pady = 5)
-
-
-    # Viewing Folders Section
-    frame_list = tk.Frame(root)
-    frame_list.pack(fill="both", expand=True, padx=10, pady=5)
-
-    scrollbar = tk.Scrollbar(frame_list)
-    scrollbar.pack(side="right", fill="y")
-
-    text_test_name = "Default"
-    listbox_tasks = tk.Listbox(frame_list, yscrollcommand=scrollbar.set, font = ("Arial", 12), selectbackground="gray")
-    listbox_tasks.pack(side="left", fill="both", expand=True)
-    scrollbar.config(command=listbox_tasks.yview)
-
-    #button_delete = tk.Button(root, text="Delete Selected Task", command = delete_task, background = "tomato", fg = "white")
-    #button_delete.pack(fill = "x", padx=10, pady=10)
+    main = Main(root)
+    main.pack()
+    root.mainloop()
 
     #default_path = "C:\Coding\Coding Projects\Python Projects\Practice\FileOrganizer\src\FileOrganizer"
     #text_test_list =  os.listdir(default_path)
