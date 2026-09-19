@@ -158,6 +158,8 @@ def delete_task():
         pass # Do "Nothing" if no item is selected
 '''
 class SortScreen(tk.Toplevel):
+    frame_root = None
+
     def __init__(self, master=None, **kwargs):
         super().__init__(master, **kwargs)
         #frame_main = tk.Frame(self)
@@ -167,12 +169,20 @@ class SortScreen(tk.Toplevel):
         self.config(background="#907948")
         current_directory = os.getcwd()
 
-        frame_sort = tk.Frame(self)
-        frame_sort.pack(padx = 10, pady = 10, fill="both",expand=True)
-        frame_sort.config(highlightthickness=0.5, highlightbackground="black")
+        self.frame_root = tk.Frame(self)
+        self.frame_root.pack(padx = 10, pady = 10, fill="both", expand=True)
+        self.frame_root.config(highlightthickness=0.5, highlightbackground="black")
 
+        self.createFilesDisplay(self.frame_root)
+        self.createDirectoryDisplay(self.frame_root)
+        self.createOptionsMenu(self.frame_root)
+
+
+    #File Display
+    def createFilesDisplay(self, wrapper = None):
         #Listing off Directory's Files
-        frame_files_directory = tk.Frame(frame_sort)
+        current_directory = os.getcwd()
+        frame_files_directory = tk.Frame(wrapper)
         frame_files_directory.pack(side = "left", ipadx = 10, ipady = 10, expand=True,fill="both")
         frame_files_directory.config(highlightthickness=0.5, highlightbackground="blue", width=100)
 
@@ -231,21 +241,26 @@ class SortScreen(tk.Toplevel):
             label_extension.pack(side="right")
             frame_files_group.pack()
             text_group_directories.pack()
-        #Current Directory Name
-        frame_directory_name = tk.LabelFrame(frame_sort)
+
+    #Directory Display
+    def createDirectoryDisplay(self, wrapper = None):
+        current_directory = os.getcwd()
+        frame_directory_name = tk.LabelFrame(wrapper)
         frame_directory_name.config(highlightthickness=0.5, highlightbackground="red", height=50, width = 100, text="Current Directory:")
         frame_directory_name.pack( fill="both", expand=True)
         text_directory_name = tk.Label(frame_directory_name,font=("Arial", 20), text=current_directory.split('\\')[-1], wraplength=200)
         text_directory_name.pack(expand=True, fill="both")
 
+    #Options Menu
+    def createOptionsMenu(self, wrapper = None):
         #Action Options
-        frame_options = tk.Frame(frame_sort)
-        frame_options.pack(ipadx=10, ipady=300, expand = True, fill="both")
+        frame_options = tk.Frame(wrapper)#frame_sort
+        frame_options.pack(ipadx=20, ipady=30, expand = True, fill="both")
         frame_options.config(highlightthickness=0.5, highlightbackground="green", width=100)
 
         button_sort_folder = tk.Button(frame_options, text="Sort Folders", font = ("Arial", 20))
         '''
-        Opens Popup Window for Changing Directory
+        #Opens Popup Window for Changing Directory
         '''
         button_change_directory = tk.Button(frame_options, text="Change Current Directory", font = ("Arial", 20))
         button_output_change = tk.Button(frame_options, text = "Change Output Folders", font = ("Arial", 20))
