@@ -35,14 +35,14 @@ def sort_screen():
     frame_sort.config(highlightthickness=0.5, highlightbackground="black")
 
     #Listing off Directory's Files
-    frame_current_directory = tk.Frame(frame_sort)
-    frame_current_directory.pack(side = "left", ipadx = 10, ipady = 10, expand=True,fill="both")
-    frame_current_directory.config(highlightthickness=0.5, highlightbackground="blue", width=100)
+    frame_files_directory = tk.Frame(frame_sort)
+    frame_files_directory.pack(side = "left", ipadx = 10, ipady = 10, expand=True,fill="both")
+    frame_files_directory.config(highlightthickness=0.5, highlightbackground="blue", width=100)
 
 
-    scrollbar_directory = tk.Scrollbar(frame_current_directory)
+    scrollbar_directory = tk.Scrollbar(frame_files_directory)
     scrollbar_directory.pack(side="right", fill="y")
-    listbox_directory_files = tk.Listbox(frame_current_directory, yscrollcommand=scrollbar_directory.set)
+    listbox_directory_files = tk.Listbox(frame_files_directory, yscrollcommand=scrollbar_directory.set)
     scrollbar_directory.config(command=listbox_directory_files.yview)
     listbox_directory_files.pack(side = "left",expand = True, fill="both")
     for current_file in os.listdir(current_directory):
@@ -163,7 +163,7 @@ class SortScreen(tk.Toplevel):
         #frame_main = tk.Frame(self)
         #frame_main.pack(padx=10, pady=10, fill="x")
         self.title("Sorting Screen")
-        self.geometry("500x400")
+        #self.geometry("500x400")
         self.config(background="#907948")
         current_directory = os.getcwd()
 
@@ -172,9 +172,9 @@ class SortScreen(tk.Toplevel):
         frame_sort.config(highlightthickness=0.5, highlightbackground="black")
 
         #Listing off Directory's Files
-        frame_current_directory = tk.Frame(frame_sort)
-        frame_current_directory.pack(side = "left", ipadx = 10, ipady = 10, expand=True,fill="both")
-        frame_current_directory.config(highlightthickness=0.5, highlightbackground="blue", width=100)
+        frame_files_directory = tk.Frame(frame_sort)
+        frame_files_directory.pack(side = "left", ipadx = 10, ipady = 10, expand=True,fill="both")
+        frame_files_directory.config(highlightthickness=0.5, highlightbackground="blue", width=100)
 
         '''
         Priority One:
@@ -191,40 +191,69 @@ class SortScreen(tk.Toplevel):
                         File2.py
                         ...
         '''
-        scrollbar_directory = tk.Scrollbar(frame_current_directory)
+        scrollbar_directory = tk.Scrollbar(frame_files_directory)
         scrollbar_directory.pack(side="left", fill="y")
-        #listbox_directory_files = tk.Listbox(frame_current_directory, yscrollcommand=scrollbar_directory.set)
-        canvas_directory_files = tk.Canvas(frame_current_directory,highlightthickness=0)
-        frame_directory_files = tk.Frame(canvas_directory_files)
-        canvas_directory_files.create_window((0,0),window=frame_directory_files, anchor="nw")
+        #listbox_directory_files = tk.Listbox(frame_files_directory, yscrollcommand=scrollbar_directory.set)
+        canvas_directory_files = tk.Canvas(frame_files_directory,highlightthickness=0)
+        canvas_directory_files.pack(fill="both")
+        frame_directory_files = tk.Frame(canvas_directory_files, highlightthickness=1, highlightcolor="black")
+        canvas_directory_files.create_window((0,0), window=frame_directory_files, anchor="nw")
         frame_directory_files.bind("<Configure>", lambda e: canvas_directory_files.configure(scrollregion=canvas_directory_files.bbox("all")))
+        #frame_directory_files.pack(side="left", fill="both")
+
         scrollbar_directory.config(command=canvas_directory_files.yview, highlightthickness=1)
+        canvas_directory_files.config(yscrollcommand=scrollbar_directory.set)
 
         #Collecting...
-        list_directory_options = list()
+        list_directory_files = list()
         temp_dir = extension_directory.extension_directory()
         list_extension = temp_dir.get_directory()
         for current_file in os.listdir(current_directory):
             extension = os.path.splitext(current_file)[1][1:]
-            list_directory_options.append([current_file,list_extension.get(extension)])
+            list_directory_files.append([current_file,list_extension.get(extension)])
 
-        print(list_directory_options)
+        #Displaying...
+        while len(list_directory_files) != 0:
+            frame_files_group = tk.Frame(frame_directory_files, highlightthickness=2, highlightcolor="red", padx=2,pady=2)
+            text_group_directories = tk.Text(frame_files_group,height=2,width=20, background=frame_files_group.cget("background"))
+            list_text = list()
+            list_text.append(list_directory_files[0])
+            current_extension = list_directory_files[0][1]
+
+            #Turn this into a single for Loop
+            list_text = [file[0] for file in list_directory_files if file[1] == list_text[0][1]]
+            for file in list_text:
+                text_group_directories.insert(tk.END, f'{file}\n')
+
+            list_directory_files = list(filter(lambda x: x[0][1] == current_extension, list_directory_files))
+            #frame_files_group.config(text=f"{current_extension}")
+            label_extension = tk.Label(frame_files_group,text = f"<---- {current_extension}")
+            label_extension.pack(side="right")
+            frame_files_group.pack()
+            text_group_directories.pack()
+        #Current Directory Name
+        frame_directory_name = tk.LabelFrame(frame_sort)
+        frame_directory_name.config(highlightthickness=0.5, highlightbackground="red", height=50, width = 100, text="Current Directory:")
+        frame_directory_name.pack( fill="both", expand=True)
+        text_directory_name = tk.Label(frame_directory_name,font=("Arial", 20), text=current_directory.split('\\')[-1], wraplength=200)
+        text_directory_name.pack(expand=True, fill="both")
+
+        #Action Options
+        frame_options = tk.Frame(frame_sort)
+        frame_options.pack(ipadx=10, ipady=300, expand = True, fill="both")
+        frame_options.config(highlightthickness=0.5, highlightbackground="green", width=100)
+
+        button_sort_folder = tk.Button(frame_options, text="Sort Folders", font = ("Arial", 20))
         '''
-        listbox_directory_files.pack(side = "left",expand = True, fill="both")
-        scrollbar_directory.config(command=listbox_directory_files.yview)
-        for current_file in os.listdir(current_directory):
-            for _ in range(20):
-                temp_dir = extension_directory.extension_directory()
-                list_extension = temp_dir.get_directory()
-                extension = os.path.splitext(current_file)[1][1:]
-               # group_extension = tk.Frame()
-                """
-                Frame contains Frames -> Labels
-                """
-                #tk.Label(text=current_directory)
-                #print(list_extension.get(extension))
-                listbox_directory_files.insert(tk.END, current_file)
+        Opens Popup Window for Changing Directory
         '''
+        button_change_directory = tk.Button(frame_options, text="Change Current Directory", font = ("Arial", 20))
+        button_output_change = tk.Button(frame_options, text = "Change Output Folders", font = ("Arial", 20))
+        button_sort_folder.grid(row = 0,column=0, sticky="nsew")
+        button_change_directory.grid(row=1,column=0, sticky="nsew")
+        button_output_change.grid(row=2,column=0, sticky="nsew")
+
+
 
 
 class Main(tk.Frame):
